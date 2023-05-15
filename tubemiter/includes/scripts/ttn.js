@@ -397,17 +397,6 @@
                     },
                 });
             });
-            cE("#fatc_onPrintClick").on("click", function (cF) {
-                cF.preventDefault();
-                html2canvas(cE("#canvas_fatc"), {
-                    onrendered: function (cG) {
-                        var cI = cG.toDataURL("image/png");
-                        var cH = new jsPDF("p", "mm", V.paperSize);
-                        cH.addImage(cI, "PNG", 10, 10);
-                        cH.save("tube-notcher-file.pdf");
-                    },
-                });
-            });
             cE("#stn_onDXFClick").on("click", function (cF) {
                 cF.preventDefault();
                 alert("The DXF output function is under construction.\n Please check back later...");
@@ -2167,7 +2156,6 @@
                 bA = ab.width;
                 b0 = ab.height;
                 aB.clearRect(0, 0, bA, b0);
-                $("#canvas_fatc").attr({ width: V.width, height: V.height });
                 phop(dw, dm, a3);
                 dw.fillText("This tube is " + ca.toFixed(1) + "mm [" + (ca / 25.4).toFixed(3) + '"] O.D.      ( ' + aJ.toFixed(1) + "mm [" + (aJ / 25.4).toFixed(3) + '"] wall)', 4 * a3, 24 * a3);
                 dw.fillText("Mating Tube Left is " + ar.toFixed(1) + "mm [" + (ar / 25.4).toFixed(3) + '"] O.D. at ' + c.toFixed(1) + " degrees.", 4 * a3, 28 * a3);
