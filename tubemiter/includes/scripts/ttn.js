@@ -146,17 +146,6 @@
         var s = bk.scrollTop();
         var bG = ai.width;
         var cf = ai.height;
-        $("#canvas_fatc").attr({ width: "768", height: "960" });
-        var ab = document.getElementById("canvas_fatc");
-        var aB = ab.getContext("2d");
-        var bh = $("#canvas_fatc");
-        var bw = bh.offset();
-        var R = bw.left;
-        var aW = bw.top;
-        var bX = bh.scrollLeft();
-        var m = bh.scrollTop();
-        var bA = ab.width;
-        var b0 = ab.height;
         (function (cE) {
             cE("#stn_onClick").on("click", function (cF) {
                 cF.preventDefault();
@@ -288,18 +277,6 @@
                 W = "ROUND_TO_FLAT_MATERIAL";
                 aH.clearRect(0, 0, bG, cf);
                 aa(W, aH);
-            });
-            cE("#fatc_onClick").on("click", function (cF) {
-                cF.preventDefault();
-                ca = guniac2m("#fatcCutTubeOD");
-                aJ = guniac2m("#fatcMatlThickness");
-                c = parseFloat(cE("#fatcLeftAngle").val());
-                ar = guniac2m("#fatcLeftTubeOD");
-                a0 = parseFloat(cE("#fatcRightAngle").val());
-                ce = guniac2m("#fatcRightTubeOD");
-                W = "FLAT_AIRFRAME_TRUSS_CLUSTER";
-                aB.clearRect(0, 0, bA, b0);
-                aa(W, aB);
             });
             cE("#future_onClick").on("click", function (cG) {
                 var cF = cE("#future_form").serializeObject();
@@ -2524,3 +2501,4 @@ playback timings (ms):
   load_resource: 1242.285
   PetaboxLoader3.resolve: 1144.124
 */
+
