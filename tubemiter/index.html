@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TubeNotcher Pattern Creator Tool</title>
+    <link rel="stylesheet" type="text/css" media="all" href="includes/css/ttn.css"/>
+    <script type="text/javascript" src="includes/scripts/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" href="static/js/jquery-ui.css" />
+    <script type="text/javascript" src="static/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="includes/scripts/ttn.js"></script>
+    <!-- Online minify conversion:    http://refresh-sf.com/ -->
+    <script type="text/javascript" src="includes/mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script>
+    <!-- <script type="text/javascript" src="http://html2canvas.hertzen.com/build/html2canvas.js"></script> -->
+    <script type="text/javascript" src="includes/scripts/html2canvas.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            'use strict';
+            //Default Action
+            // concept for tabs came from http://www.htmldrive.net/items/show/542/Simple-Tabs-w-CSS-jQuery.html
+            $(".tab_content").hide(); //Hide all content
+            $("ul.tabs li:first").addClass("active").show(); //Activate first tab
+            $(".tab_content:first").show(); //Show first tab content
+
+            //On Click Event
+            $("ul.tabs li").click(function() {
+                 console.log(this);
+                $("ul.tabs li").removeClass("active"); //Remove any "active" class
+                $(this).addClass("active"); //Add "active" class to selected tab
+                $(".tab_content").hide(); //Hide all tab content
+                var activeTab = $(this).find("a").attr("href"); //Find the rel attribute value to identify the active tab + content
+                $(activeTab).fadeIn(); //Fade in the active content
+                return false;
+            });
+
+            // hide info boxes
+            $("#stn_info_box").dialog({
+                autoOpen: false,
+                minWidth: 900,
+                minHeight: 500
+            });
+
+            $("#dte_info_box").dialog({
+                autoOpen: false,
+                minWidth: 500,
+                minHeight: 500
+            });
+
+            $("#ss2st_info_box").dialog({
+                autoOpen: false,
+                width: 900,
+                minHeight: 500
+            });
+
+            $("#rt2tt_info_box").dialog({
+                autoOpen: false,
+                width: 900,
+                minHeight: 500
+            });
+
+            $("#otrt_info_box").dialog({
+                autoOpen: false,
+                minWidth: 500,
+                minHeight: 500
+            });
+
+            $("#rtb1_info_box").dialog({
+                autoOpen: false,
+                width: 900,
+                minHeight: 900
+            });
+
+            $("#rtb2_info_box").dialog({
+                autoOpen: false,
+                width: 900,
+                minHeight: 900
+            });
+
+            $("#col_info_box").dialog({
+                autoOpen: false,
+                width: 900,
+                minHeight: 900
+            });
+
+            $("#rtsm_info_box").dialog({
+                autoOpen: false,
+                width: 900,
+                minHeight: 900
+            });
+
+            $("#rtfm_info_box").dialog({
+                autoOpen: false,
+                width: 900,
+                minHeight: 900
+            });
+
+            $("#fatc_info_box").dialog({
+                autoOpen: false,
+                width: 900,
+                minHeight: 900
+            });
+
+            $("#numeric_input_info_box").dialog({
+                autoOpen: false,
+                width: 500,
+                minHeight: 500
+            });
+
+            ttn();
+
+        }); // end of document ready
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Tabbed TubeNotcher Pattern Creation Tool</h1>
+        <ul class="tabs">
+            <li><a href="#tab1">Intro</a></li>
+            <li><a href="#tab2">Simple</a></li>
+            <li><a href="#tab3">Dec Ends</a></li>
+            <li><a href="#tab4">SS/ST</a></li>
+            <li><a href="#tab5">Round/Tapered</a></li>
+            <li><a href="#tab6">Oval/Round</a></li>
+            <li><a href="#tab7">Bracing</a></li>
+            <li><a href="#tab8">Collector</a></li>
+            <li><a href="#tab9">Round/SQ</a></li>
+            <li><a href="#tab10">Round/Flat</a></li>
+            <li><a href="#tab11">Airframe Cluster</a></li>
+            <li><a href="#tab12">Issues/Upgrades?</a></li>
+        </ul>
+        <div class="tab_container">
+            <div id="tab1" class="tab_content">
+                <div class="textBox">
+                    <iframe src="includes/resources/instructions.html" width="100%" height="100%"></iframe>
+                </div>
+            </div>
+            <div id="tab2" class="tab_content">
+                <h2>Simple Tube Notcher</h2>
+                <form>
+                    <div class="containerLeft">
+                        <label title="Data can be entered in
+the default millimeters or in inches.  Enter data in
+either decimal or fraction format.
+Examples:  25.4  or 20-1/2 or 1&quot; or 1-1/4&quot; or 2.5&quot;">Cut Tube O.D. (mm): &nbsp;</label>
+                        <input type="text" id="stnCutTubeOD" value="25.4" size="8">
+                        <br/>
+                        <label>Base Tube O.D. (mm):</label>
+                        <input type="text" id="stnBaseTubeOD" value="30" size="8">
+                        <br/>
+                        <label>Matl Thickness (mm): &nbsp;</label>
+                        <input type="text" id="stnMatlThickness" value="0.9" size="8">
+                        <br/>
+                    </div>
+                    <div class="containerLeft">
+                        <label>Angle Between Tubes (deg):</label>
+                        <input type="text" id="stnAngle" value="45" size="8">
+                        <br>
+                        <label>(+/-) Offset C/L to C/L (Use Carefully!)</label>
+                        <input type="text" id="stnOffset" value="0.00" size="8">
+                        <br>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="containerLeft">
+                        <input type="button" value="Calculate" id="stn_onClick">
+                        <input type="button" value="Print" id="stn_onPrintClick">
+                        <input type="button" value="Create DXF File" id="stn_onDXFClick">
+                        <input type="button" value="Help / Info" id="stn_onHelpClick">
+                    </div>
+                </form>
+                <div id="stn_info_box" class="info_box" title="Simple Tube Notcher Help / Info.">
+                    Hints and Suggestions:
+                    <ul>
+                        <li>If you don't want to see the inner surface cut line, just set material thickness to zero -0- </li>
+                        <li>We're pretty flexible on data entry formats, both metric and inches. The default entry is millimeters (mm). If you want to enter dimensions in inches, no problem. Use <b>1&quot;</b> or <b>1 inch</b> format to let the system know
+                            that.
+                        </li>
+                        <li>Enter data in either decimal or fraction format. Examples: 25.4 or 20-1/2 or 25.4 mm or 1&quot; or 1-1/4&quot; or 2.5&quot; or 1-1/2 inch </li>
+                        <li>All data entries are repeated on the printout in both english and metric. Please verify you have the intended measurements.</li>
+                        <li>As an experiment, try to create a cut tube that is LARGER in diameter than its base tube. Check the results. You can create your own thru tube holes this way. </li>
+                        <li>DXF output? We're assuming that's because you want to print something big. You can take this DXF file down to the local printer and they can print it out on a large printer... </li>
+                        <li>If you want a dxf file to feed into a CNC system (X axis, rotational positioner for plasma cutter), that's a different story. Contact us for customization </li>
+                    </ul>
+                </div>
+                <div class="box_container">
+                    <canvas class="canvas" id="canvas_stn" width="100" height="60"></canvas>
+                    <!-- LBC Note: Applet size in HTML callout is 1000 wide x 760 high -->
+                </div>
+            </div>
+            <div id="tab3" class="tab_content">
+                <h2>Decorative Tube Ends</h2>
+                <form id="dte_form">
+
+                    <div class="containerLeft">
+                        <input type="radio" name="dteStyle" value="SINE" checked>
+                        <label>Sine Wave</label>
+                        <br/>
+                        <input type="radio" name="dteStyle" value="SQUARE">
+                        <label>Square Wave</label>
+                        </label>
+                        <br/>
+                        <input type="radio" name="dteStyle" value="TRIANGLE">
+                        <label>Triangular Wave</label>
+                        <br/>
+                    </div>
+                    <div class="containerLeft">
+                        <input type="radio" name="dteStyle" value="SAWTOOTH">
+                        <label>Sawtooth Wave</label>
+                        <br>
+                        <input type="radio" name="dteStyle" value="HYPER">
+                        <label>Hyperbolic</label>
+                        <br>
+                        <input type="radio" name="dteStyle" value="SCALLOPS">
+                        <label>U-Cut Scallops</label>
+                        <br>
+                    </div>
+                    <div class="containerLeft">
+                        <label title="Data can be entered in
+the default millimeters or in inches.  Enter data in
+either decimal or fraction format.
+Examples:  25.4  or 20-1/2 or 1&quot; or 1-1/4&quot; or 2.5&quot;">Tube O.D. (mm): &nbsp;</label>
+                        <input type="text" id="dteCutTubeOD" value="31.75" size="8">
+                        <br/>
+                        <label>Amplitude (mm):</label>
+                        <input type="text" id="dteAmplitude" value="25.4" size="8">
+                        <br/>
+                        <label># of Cycles:</label>
+                        <input type="text" id="dteNumOfCycles" value="3" size="8">
+                        <br/>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="containerLeft">
+                        <input type="button" value="Calculate" id="dte_onClick">
+                        <input type="button" value="Print" id="dte_onPrintClick">
+                        <input type="button" value="Help / Info" id="dte_onHelpClick">
+                    </div>
+                </form>
+                <div id="dte_info_box" class="info_box" title="Decorative Tube Ends Help / Info.">
+                    <p>Notes: You may notice the alignment reference lines don't always print out in the same place when using this decorative element feature. This is dependent on how many cycles you've chosen.</p>
+                    <p>We've done a rotation so the peak (or center) of a node element has a perfect reference line. This is to make things line up more naturally with the rest of your design.</p>
+                </div>
+                <div class="box_container">
+                    <canvas class="canvas" id="canvas_dte" width="100" height="60"></canvas>
+                </div>
+            </div>
+            <div id="tab4" class="tab_content">
+                <h2>Bicycle Seat Stays to Seat Tube Joint</h2>
+                <form id="ss2st_form">
+                    <div class="containerLeft">
+                        <input type="radio" name="ss2st_side" value="left" checked>
+                        <label>Left Side SS</label>
+                        <br>
+                        <input type="radio" name="ss2st_side" value="right">
+                        <label>Right Side SS</label>
+                        </label>
+                        <br>
+                    </div>
+                    <div class="containerLeft">
+                        <label title="Data can be entered in
+the default millimeters or in inches.  Enter data in
+either decimal or fraction format.
+Examples:  25.4  or 20-1/2 or 1&quot; or 1-1/4&quot; or 2.5&quot;">Seat Stay [SS] O.D. (mm): </label>
+                        <input type="text" id="ss2stSeatStayOD" value="16" size="8">
+                        <br/>
+                        <label>Seat Tube [ST] O.D. (mm): </label>
+                        <input type="text" id="ss2stSeatTubeOD" value="31.75" size="8">
+                        <br/>
+                        <label>Seat Stay Material Thickness: </label>
+                        <input type="text" id="ss2stSeatStayMaterialThickness" value="0.8" size="8">
+                        <br/>
+                    </div>
+                    <div class="containerLeft">
+                        <label>Angle between SS and ST in bike side view (Deg): </label>
+                        <input type="text" id="ss2stSideViewAngle" value="40" size="8">
+                        <br/>
+                        <label>Distance between the two Seat Stays, edge to edge (mm):</label>
+                        <input type="text" id="ss2ssDistBetweenEdges" value="4.5" size="8">
+                        <br/>
+                        <label>True Angle between the two Seat Stays (Deg):</label>
+                        <input type="text" id="ss2stSeatStay2SeatStayAngle" value="20" size="8">
+                        <br/>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="containerLeft">
+                        <input type="button" value="Calculate" id="ss2st_onClick">
+                        <input type="button" value="Print" id="ss2st_onPrintClick">
+                        <input type="button" value="Help / Info" id="ss2st_onHelpClick">
+                    </div>
+                </form>
+                <div id="ss2st_info_box" class="info_box" title="Seat Stay to Seat Tube Joint Info.">
+                    <p> The Seat Stays to Seat Tube joint can be frustrating. Hopefully this stuff helps. </p>
+                    <p> New Feature under investigation... let gap between the two seat stays go less than zero, provide flat mating surface... </p>
+                    <p>Info you will need:</p>
+                    <center>
+                        <img src="includes/images/ss_rear_view_w_text.jpg"/>
+                    </center>
+                    <br>
+                    <br>
+                    <center>
+                        <img src="includes/images/sideview_w_text.jpg"/>
+                    </center>
+                </div>
+                <div class="box_container">
+                    <canvas class="canvas" id="canvas_ss2st" width="100" height="60"></canvas>
+                </div>
+            </div>
+
+            <div id="tab5" class="tab_content">
+                <h2>Round Tube to Tapered Tube</h2>
+                <form id="_form">
+                    <div class="containerLeft">
+                        <label title="Data can be entered in
+the default millimeters or in inches.  Enter data in
+either decimal or fraction format.
+Examples:  25.4  or 20-1/2 or 1&quot; or 1-1/4&quot; or 2.5&quot;">Cut Tube O.D. (mm): &nbsp;</label>
+                        <input type="text" id="rt2ttCutTubeOD" value="25.4" size="8">
+                        <br/>
+                        <label>Cut Tube Material Thickness (mm): &nbsp;</label>
+                        <input type="text" id="rt2ttMatlThickness" value="0.9" size="8">
+                        <br/>
+                        <label>Angle Between Cut Tube &amp; Tapered Tube (Deg): </label>
+                        <input type="text" id="rt2ttAngle" value="45" size="8">
+                        <br/>
+                    </div>
+                    <div class="containerLeft">
+                        <label>Tapered Base Tube O.D. at Wider Touch Point (mm):</label>
+                        <input type="text" id="rt2ttWideTaperOD" value="42" size="8">
+                        <br/>
+                        <label>Tapered Base Tube O.D. at Narrow Touch Point (mm):</label>
+                        <input type="text" id="rt2ttNarrowTaperOD" value="37" size="8">
+                        <br>
+                        <label>(+/-) Offset C/L to C/L (Use Carefully!)</label>
+                        <input type="text" id="rt2ttOffset" value="0.00" size="8">
+                        <br>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="containerLeft">
+                        <input type="button" value="Calculate" id="rt2tt_onClick">
+                        <input type="button" value="Print" id="rt2tt_onPrintClick">
+                        <input type="button" value="Help / Info" id="rt2tt_onHelpClick">
+                    </div>
+                </form>
+                <div id="rt2tt_info_box" class="info_box" title="Round Tube to Tapered Tube Info.">
+                    <p> This calculation was pretty difficult, and in fact is a linear approximation. Its a place to start, but I wouldn't expect it to be absolutely perfect. You may have to do some slight adjustments by hand to obtain a perfect final fit.</p>
+                    <p> Remember we are mitering the round tube to fit to the tapered tube</p>
+                    <p> Note angles carefully. Tube angle less than 90&deg; means the tube is approaching from the large end of the tapered tube (as shown in the image below). Use angles larger than 90&deg; to indicate the tube is approaching from the small
+                        end of the tapered tube. </p>
+                    <center>
+                        <img src="includes/images/tapered_tube.jpg"/>
+                    </center>
+                </div>
+                <div class="box_container">
+                    <canvas class="canvas" id="canvas_rt2tt" width="100" height="60"></canvas>
+                </div>
+            </div>
+
+            <div id="tab6" class="tab_content">
+                <h2>Oval (Elliptical) Tube to Round Tube</h2>
+                <form id="otrt_form">
+                    <div class="containerLeft">
+                        <input type="radio" name="otrt_axis" value="major" checked>
+                        <label>Ellipse MAJOR Axis Parallel to Base Tube Centerline?</label>
+                        <br> &nbsp;&nbsp;&nbsp;&nbsp;(e.g. Downtube to Headtube)
+                        <br>
+                        <input type="radio" name="otrt_axis" value="minor">
+                        <label>Ellipse MINOR Axis Parallel to Base Tube Centerline?</label>
+                        <br> &nbsp;&nbsp;&nbsp;&nbsp;(e.g. Chainstay to Bottom Bracket)
+                        </label>
+                        <br>
+                    </div>
+                    <div class="containerLeft">
+                        <label title="Data can be entered in
+the default millimeters or in inches.  Enter data in
+either decimal or fraction format.
+Examples:  25.4  or 20-1/2 or 1&quot; or 1-1/4&quot; or 2.5&quot;">Cut Tube Major Axis O.D. (mm): </label>
+                        <input type="text" id="otrtCutTubeMajAxis" value="30" size="8">
+                        <br/>
+                        <label>Cut Tube Minor Axis O.D. (mm): </label>
+                        <input type="text" id="otrtCutTubeMinAxis" value="25" size="8">
+                        <br/>
+                        <label>Base Tube O.D. (mm):</label>
+                        <input type="text" id="otrtBaseTubeOD" value="27.5" size="8">
+                        <br/>
+
+                    </div>
+                    <div class="containerLeft">
+                        <label>Cut Tube Matl Thickness (mm): &nbsp;</label>
+                        <input type="text" id="otrtMatlThickness" value="0.9" size="8">
+                        <br/>
+                        <label>Angle Between Tubes (deg):</label>
+                        <input type="text" id="otrtAngle" value="45" size="8">
+                        <br>
+                        <label>(+/-) Offset C/L to C/L (Use Carefully!)</label>
+                        <input type="text" id="otrtOffset" value="0.00" size="8">
+                        <br>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="containerLeft">
+                        <input type="button" value="Calculate" id="otrt_onClick">
+                        <input type="button" value="Print" id="otrt_onPrintClick">
+                        <input type="button" value="Help / Info" id="otrt_onHelpClick">
+                    </div>
+                    <div style="clear: both"></div>
+                </form>
+                <div id="otrt_info_box" class="info_box" title="Ellipical to Round Tube Help / Info.">
+                    <p> This may not be very common, but I do know there are some bicycle downtubes and chain stays that are elliptical in cross section. </p>
+                    <p> And I do know some folks will gently squeeze a round tube into an oval to get it to fit a smaller mating tube as required. This template should get you into the ballpark, so you can cut your elliptical shaped tubes accurately. </p>
+                    <p>Assumptions:</p>
+                    <ul>
+                        <li>Reminder -- major and minor axes of an ellipse:
+                            <br>
+                            <center>
+                                <img src="includes/images/horizmajaxis.gif"/>
+                            </center>
+                        </li>
+                        <li>The tube being cut is a true elliptical shape and the mating base tube is round.
+                            <br>
+                            <center>
+                                <img src="includes/images/ellipse.jpg"/>
+                            </center>
+                        </li>
+                        <li>The elliptical shape is uniform in cross section along the length of the cut tube.</li>
+                        <li>Either the major/minor axis of the ellipse is in same plane as tube to tube angle.</li>
+                    </ul>
+                </div>
+                <div class="box_container">
+                    <canvas class="canvas" id="canvas_otrt" width="100" height="60"></canvas>
+                </div>
+            </div>
+            <div id="tab7" class="tab_content">
+                <h2>Round Tube Bracing</h2>
+                <form id="rtb_form">
+                    <div class="containerLeft">
+                        Calculation Method:
+                        <br/>
+                        <input type="radio" name="rtbTechnique" value="edgeToEdge" checked>
+                        <label>Measured Edge to Edge Tubular Gusset</label>
+                        <br>
+                        <input type="radio" name="rtbTechnique" value="bisector">
+                        <label>Bisector Bridge</label>
+                        </label>
+                        <br>
+                    </div>
+                    <div class="containerLeft">
+                        <label title="Data can be entered in
+the default millimeters or in inches.  Enter data in
+either decimal or fraction format.
+Examples:  25.4  or 20-1/2 or 1&quot; or 1-1/4&quot; or 2.5&quot;">Tube One O.D. (mm): </label>
+                        <input type="text" id="rtbTube1OD" value="25.4" size="8">
+                        <br/>
+                        <label>Tube Two O.D. (mm): </label>
+                        <input type="text" id="rtbTube2OD" value="25.4" size="8">
+                        <br/>
+                        <label>Gusset / Brace O.D. (mm): </label>
+                        <input type="text" id="rtbBraceOD" value="25.4" size="8">
+                        <br/>
+                        <label>Angle between tubes 1 &amp; 2 (Deg): </label>
+                        <input type="text" id="rtbAngleBetween1and2" value="60" size="8">
+                        <br/>
+                        <label style="margin-top: -4px;">Enter -0- if the tubes are parallel.</label>
+                        <br/>
+                    </div>
+
+                    <div class="containerLeft">
+                        <label>Gusset / Brace Material Thickness (mm): </label>
+                        <input type="text" id="rtbBraceMatlThickness" value="0.8" size="8">
+                        <br/>
+                        <label class="contact_length">Gusset Contact Length on Tube 1 (mm):</label>
+                        <input class="contact_length" type="text" id="rtbTube1ContactLength" value="120" size="8">
+                        <br/>
+                        <label class="contact_length">Gusset Contact Length on Tube 2 (mm):</label>
+                        <input class="contact_length" type="text" id="rtbTube2ContactLength" value="45" size="8">
+                        <br/>
+                        <label class="tube_distance">Distance between Tubes 1 &amp; 2 (mm):</label>
+                        <input class="tube_distance" type="text" id="rtbDistBetween1and2atCenterline" value="152.4" size="8">
+                        <br/>
+                        <label class="tube_distance" style="margin-top: -4px;"> Centerline to Centerline at Bridge/Brace Location</label>
+                        <br/>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="containerLeft">
+                        <input type="button" value="Calculate" id="rtb_onClick">
+                        <input type="button" value="Print" id="rtb_onPrintClick">
+                        <input type="button" value="Bicycle Frame Help / Info" id="rtb1_onHelpClick">
+                        <input type="button" value="Generic Design Help / Info" id="rtb2_onHelpClick">
+                    </div>
+                    <div style="clear: both"></div>
+                </form>
+                <div id="rtb1_info_box" class="info_box" title="Round Tube Bracing Help / Info.">
+                    <p> There are a lot of places where round tubes can be used for bracing or reinforcement.</p>
+                    <center>
+                        <img src="includes/images/ttn_gg_intro.jpg"/>
+                    </center>
+                    <p> This program has two different alternative means of entering data for a tubular brace
+                        <ul>
+                            <li> a bisector brace that creates brace with symetric angles.</li>
+                            <center>
+                                <img src="includes/images/ttn_gg_bisector_w_text.jpg"/>
+                            </center>
+                            <li> A measured brace that is custom fit to your specific application.</li>
+                            <center>
+                                <img src="includes/images/ttn_gg_measure_w_text.jpg"/>
+                            </center>
+                        </ul>
+                    </p>
+
+                </div>
+                <div id="rtb2_info_box" class="info_box" title="Round Tube Bracing Help / Info.">
+                    <p> There are a lot of places where round tubes can be used for bracing or reinforcement.</p>
+                    <center>
+                        <img src="includes/images/generic_ttn_gg_intro.jpg"/>
+                    </center>
+                    <p> This program has two different alternative means of entering data for a tubular brace
+                        <ul>
+                            <li> a bisector brace that creates brace with symetric angles.</li>
+                            <center>
+                                <img src="includes/images/generic_ttn_gg_bisector_w_text.jpg"/>
+                            </center>
+                            <li> A measured brace that is custom fit to your specific application.</li>
+                            <center>
+                                <img src="includes/images/generic_ttn_gg_measure_w_text.jpg"/>
+                            </center>
+                        </ul>
+                    </p>
+
+                </div>
+                <div class="box_container">
+                    <canvas class="canvas" id="canvas_rtb" width="100" height="60"></canvas>
+                </div>
+            </div>
+            <div id="tab8" class="tab_content">
+                <h2>Collector</h2>
+                <form id="col_form">
+                    <div class="containerLeft">
+                        Which product is being calculated?
+                        <br/>
+                        <input type="radio" name="colTechnique" value="decorative_point">
+                        <label>Multiple Feeds to Sharp Cone (Decorative?)</label>
+                        <br>
+                        <input type="radio" name="colTechnique" value="exh_collect" checked>
+                        <label>Multiple Feeds (Mate to Common Output Tube)</label>
+                        </label>
+                        <br>
+                        <input type="radio" name="colTechnique" value="common_output_tube">
+                        <label>Common Output Tube </label>
+                        </label>
+                        <br>
+                    </div>
+                    <div class="containerLeft">
+                        <label title="Data can be entered in
+the default millimeters or in inches.  Enter data in
+either decimal or fraction format.
+Examples:  25.4  or 20-1/2 or 1&quot; or 1-1/4&quot; or 2.5&quot;">Feeder Tube O.D. (mm):</label>
+                        <input type="text" id="colFeederTubeOD" value="3&quot;" size="8">
+                        <br/>
+                        <label>Feeder Tube Matl Thickness (mm):</label>
+                        <input type="text" id="colFeederMatlThickness" value="0" size="8">
+                        <br/>
+                        <label>Common Tube O.D. (mm):</label>
+                        <input type="text" id="colCommonTubeOD" value="3&quot;" size="8">
+                        <br/>
+                        <label>Common Tube Matl Thickness (mm): &nbsp;</label>
+                        <input type="text" id="colCommonMatlThickness" value="1/16&quot;" size="8">
+                        <br/>
+                    </div>
+                    <div class="containerLeft">
+                        <label>The Number of Feeder Tubes (2, 3, 4, + ?):</label>
+                        <input type="text" id="colFeedNumb" value="4" size="8">
+                        <br>
+                        <label>Angle Between Feeder Tubes and Centerline Axis (deg):</label>
+                        <input type="text" id="colAngle" value="30" size="8">
+                        <br>
+                        <label>Excess Safety Material to Leave on Feeder Tube? (mm)</label>
+                        <input type="text" id="colSafetyOffset" value="1/32&quot;" size="8">
+                        <br>
+                        <label style="margin-top: -2px;"> If you are making an exhaust manifold, and high flow rates matter, leave this at -zero-</label>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="containerLeft">
+                        <input type="button" value="Calculate" id="col_onClick">
+                        <input type="button" value="Print" id="col_onPrintClick">
+                        <input type="button" value="Help / Info" id="col_onHelpClick">
+                    </div>
+                </form>
+                <div id="col_info_box" class="info_box" title="Collector Help / Info.">
+                    <p autofocus>Collectors allow for multiple round tubes to join in symmetry. Tough thing to weld up, interesting to look at.</p>
+                    <p> Use them for vehicle exhaust systems, for decorative elements, or whatever you can come up with.</p>
+                    <p> SAFETY REMINDER: Be careful, these components are RAZOR SHARP. Wear gloves, be careful! Pay attention to the details.</p>
+                    <center>
+                        <img src="includes/images/7ee13c411b8e2815.jpg"/>
+                    </center>
+                    <center>
+                        <img src="includes/images/manifold_03.jpg"/>
+                    </center>
+                    <br>
+                    <br>
+                    <center>
+                        <img src="includes/images/collector_vise_stand.png"/>
+                    </center>
+                    <p> Note: that vise stand looks great on paper, <a href="https://web.archive.org/web/20160306120337/http://dogfeatherdesign.com/how-tippy-is-it/" target="_blank">but I'm thinking three legs probably isn't enough.</a> </p>
+                    <br>
+                    <p> Hint: for the Common Output Tube pattern, you may want to cut the paper template at the red 'inner' material thickness reference line.  You'll have a bevel gap, fill that via TIG, MIG or Brazing filler.</p>
+                </div>
+                <div class="box_container">
+                    <canvas class="canvas" id="canvas_col" width="100" height="60"></canvas>
+                </div>
+            </div>
+            <div id="tab9" class="tab_content">
+                <h2>Round Tube to Square Material</h2>
+                <form>
+                    <div class="containerLeft">
+                        <label title="Data can be entered in
+the default millimeters or in inches.  Enter data in
+either decimal or fraction format.
+Examples:  25.4  or 20-1/2 or 1&quot; or 1-1/4&quot; or 2.5&quot;">Cut Tube O.D. (mm):</label>
+                        <input type="text" id="rtsmCutTubeOD" value="37.46" size="8">
+                        <br/>
+                        <label>Cut Tube Matl Thickness (mm):</label>
+                        <input type="text" id="rtsmMatlThickness" value="0.9" size="8">
+                        <br/>
+                        <label>Square Tube Cross Section Size (mm):</label>
+                        <input type="text" id="rtsmBaseSQTubeOD" value="50" size="8">
+                        <br/>
+                        <label>Square Tube Gauge/Matl Thickness (mm):</label>
+                        <input type="text" id="rtsmBaseSQTubeThickness" value="3.175" size="8">
+                        <br/>
+                    </div>
+                    <div class="containerLeft">
+                        <label>Angle between Cut Tube C/L and Sq. Tube C/L:</label>
+                        <input type="text" id="rtsmAngle" value="60" size="8">
+                        <br>
+                        <label>Square Tube Face Orientation, normally 90&deg; or 45&deg; :</label>
+                        <input type="text" id="rtsmFaceOrientation" value="45" size="8">
+                        <br>
+                        <label>(+/-) Offset C/L to C/L (Use Carefully!)</label>
+                        <input type="text" id="rtsmOffset" value="0.00" size="8">
+                        <br>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="containerLeft">
+                        <input type="button" value="Calculate" id="rtsm_onClick">
+                        <input type="button" value="Print" id="rtsm_onPrintClick">
+                        <input type="button" value="Help / Info" id="rtsm_onHelpClick">
+                        <!-- <input type="button" value="Create DXF File" id="stn_onDXFClick"> -->
+                    </div>
+                </form>
+                <div id="rtsm_info_box" class="info_box" title="Round Tube to Square Material Help / Info.">
+                    <p autofocus>
+                        Assumptions:
+                        <ul>
+                            <li> Round to Square Tube orientation call out:
+                                <br>
+                                <img src="includes/images/Square_to_round_orientation.jpg"/>
+                            </li>
+                            <li>At this time, for this tool, we are only creating templates for the round tube.</li>
+                            <li>Templates for square tubing are possible, but very difficult to implement as the corner radiuses may not be consistent from supplier to supplier.</li>
+                            <li>The typical outside corner radius of North American HSS is 2t, where t is the wall thickness of the as-produced HSS, to the standard ASTM A500-10.
+                                <a href="https://web.archive.org/web/20160306120337/http://steeltubeinstitute.org/hss/faq/corner-radii-squarerectangular-hss/">Reference</a></li>
+                        </ul>
+                </div>
+                <div class="box_container">
+                    <canvas class="canvas" id="canvas_rtsm" width="100" height="60"></canvas>
+                </div>
+            </div>
+            <div id="tab10" class="tab_content">
+                <h2>Round Tube to Flat Material</h2>
+                <form id="rtfm_form">
+                    <div class="containerLeft">
+                        Which product is being calculated?
+                        <br/>
+                        <input type="radio" name="rtfmTechnique" value="tube" checked>
+                        <label>Tube Which Mates to Flat Surface</label>
+                        <br>
+                        <input type="radio" name="rtfmTechnique" value="endCap">
+                        <label>Flat Weld On Cap for Tube</label>
+                        </label>
+                        <br>
+                        <input type="radio" name="rtfmTechnique" value="thruHole">
+                        <label>Thru Hole in Flat Material </label>
+                        <br>
+                    </div>
+                    <div class="containerLeft">
+                        <label title="Data can be entered in
+the default millimeters or in inches.  Enter data in
+either decimal or fraction format.
+Examples:  25.4  or 20-1/2 or 1&quot; or 1-1/4&quot; or 2.5&quot;">Tube O.D. (mm):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <input type="text" id="rtfmCutTubeOD" value="50.8" size="8">
+                        <br/>
+                        <label>Cut Tube Matl Thickness (mm):</label>
+                        <input type="text" id="rtfmMatlThickness" value="3.175" size="8">
+                        <br/>
+                        <label>Angle Between the Tube &amp; Flat Surface (deg):</label>
+                        <input type="text" id="rtfmAngle" value="45" size="8">
+                        <br>
+                    </div>
+                    <div class="containerLeft">
+                        <label>Flat Plate Matl Thickness (mm): &nbsp;</label>
+                        <input type="text" id="rtfmFlatPlateMatlThickness" value="0" size="8">
+                        <br/>
+                        <label>End Cap Undersize / Thru Hole Clearance Allowance (+/-mm):</label>
+                        <input type="text" id="rtfmEndCapClearance" value="-1.5875" size="8">
+                        <br>
+                        <label style="margin-top: -2px; line-height: 18px;">
+                            Undersize = Negative Number (-); Oversize = Positive Number (+)</label>
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="containerLeft">
+                        <input type="button" value="Calculate" id="rtfm_onClick">
+                        <input type="button" value="Print" id="rtfm_onPrintClick">
+                        <input type="button" value=" Help / Info" id="rtfm_onHelpClick">
+                    </div>
+                </form>
+                <div id="rtfm_info_box" class="info_box" title="Round Tube to Flat Material Help / Info.">
+                    <p autofocus>Many folks will have expensive tools for some of these cuts. Others of us are on a budget. Hand tools can be fun, don't cost too much or take up storage room in the shop.</p>
+                    <ul>
+                        <li>
+                            <p> We'd like to help you cut your tubes at an angle.
+                                <div style="font-size: 15px;">Note: When doing accurate work using just hand tools, you only want to cut a line you can see. Best to use the template to mark your work; cut carefully just a bit proud of the line. Rotate the tube in your tubing blocks,
+                                    cut again. Remember, only cut to the line you can see. Don't try to cut through to the backside of the tube. It will go awry every time. Instead, make numerous small cuts. At some point you will have a saw groove to
+                                    guide your hack saw blade. That groove can help you complete the cut through the material. Way more accurate, much less filing &amp; clean up. Note this hint based on old skool skills taught by
+                                    <a href="https://web.archive.org/web/20160306120337/http://www.brooksboatsdesigns.com/"> John Brooks, Master Craftsman and BoatBuilder extraordinaire, Brooklin Maine..</a> </div>
+                            </p>
+                            <center>
+                                <img src="includes/images/angled_cut_round_tube.jpg" style="width: 500px; height: auto;"/>
+                            </center>
+                        </li>
+                        <li>
+                            <p> ... or cut an elliptical hole thru sheet metal</p>
+                            <p style="font-size: 15px;"> (and yeah, I know this one is actually a casting, but it's expensive, and where is the fun in that?) Hey, wouldn't it be awesome to make this out of stainless steel plate and tube?</p>
+                            <center>
+                                <img src="includes/images/thru_hull_hole.jpg"/>
+                            </center>
+
+                        </li>
+                        <li>
+                            <p> ... or even create an endcap, either round or oval.
+                                <br> If you make the end cap a bit smaller than the tube O.D.,
+                                <br/>there will be enough space for weld bead to fill the gap nicely.
+                                <br/> Undersize = Negative Number (-); Oversize = Positive Number (+)
+                            </p>
+                            <center>
+                                <img src="includes/images/endcap.jpg"/>
+                            </center>
+                            <br>
+                            <center>
+                                <img src="images/offroad_allroad_rear_bumper_18.jpg" style="width: 500px; height: auto;"/>
+                            </center>
+                        </li>
+                        <li>
+                            We've added a factor to allow for easy adjustment of effective tube diameter. You can make it a negative number to allow for weld bead on a cap. We use that same factor for additional clearance on the thru hole calculations. If you don't desire this feature,
+                            please set that value to zero.
+                        </li>
+                    </ul>
+                </div>
+                <div class="box_container">
+                    <canvas class="canvas" id="canvas_rtfm" width="100" height="60"></canvas>
+                </div>
+            </div>
+
+            <div id="tab11" class="tab_content">
+                <h2>Flat Airframe Truss Cluster</h2>
+                <form id="fatc_form">
+
+                    <div class="containerLeft">
+                        <label title="Data can be entered in
+the default millimeters or in inches.  Enter data in
+either decimal or fraction format.
+Examples:  25.4  or 20-1/2 or 1&quot; or 1-1/4&quot; or 2.5&quot;">Cut Tube O.D. (mm):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <input type="text" id="fatcCutTubeOD" value="3/4 inch" size="8">
+                        <br/>
+                        <label>Cut Tube Matl Thickness (mm):</label>
+                        <input type="text" id="fatcMatlThickness" value="0.032&quot;" size="8">
+                        <br/>
+                        <label>Angle Between Cut Tube and the Tube on its Left (deg):</label>
+                        <input type="text" id="fatcLeftAngle" value="30" size="8">
+                        <br>
+                    </div>
+                    <div class="containerLeft">
+                        <label>Left Tube O.D. (mm): &nbsp;</label>
+                        <input type="text" id="fatcLeftTubeOD" value="3/4 inch" size="8">
+                        <br/>
+                        <label>Angle Between Cut Tube and the Tube on its Right (deg):</label>
+                        <input type="text" id="fatcRightAngle" value="60" size="8">
+                        <br>
+                        <label>Right Tube O.D. (mm): &nbsp;</label>
+                        <input type="text" id="fatcRightTubeOD" value="3/4 inch" size="8">
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="containerLeft">
+                        <input type="button" value="Calculate" id="fatc_onClick">
+                        <input type="button" value="Print" id="fatc_onPrintClick">
+                        <input type="button" value=" Help / Info" id="fatc_onHelpClick">
+                    </div>
+                </form>
+                <div id="fatc_info_box" class="info_box" title="Round Tube to Flat Material Help / Info.">
+                    <p autofocus>This is a joint used by folks in homebuilt airplanes, but its also applicable to vehicle truss structures and a whole lot more...</p>
+                    <center>
+                        <img src="includes/images/vr3_prof_tubes_2std.jpg" style="width: 400px; height: auto;"/>
+                    </center>
+
+                    <center>
+                        <img src="includes/images/vr3_dsc_0122std.jpg" style="width: 400px; height: auto; "/>
+                    </center>
+
+                    <center>
+                        <img src="includes/images/vr3_prof_tubes_3std.jpg" style="width: 400px; height: auto;"/>
+                    </center>
+
+                    <h2>Assumptions:</h2>
+                    <ul>
+                        <li>
+                            <p> The centerlines of the cut tube and its nearest neighbors are coplanar.  That is, Cut / Left / Right tubing centerlines all lie on a single flat plane.</p>
+                        </li>
+                        <li><p> The centerlines of all three tubes meet at a single intersection point.</p>
+                        </li>
+                        <li> <p> Note, Left/Right terminology is arbitrary.  Just be consistent. </p>
+                        </li>
+                        <li> This tools is set up for an incremental build process.  Lets say you are going to build a joint with long straight tube, and three feeder tubes, each 45&deg; from each other.
+                            Build it incrementally. First add the 90&deg; tube, using the Simple Tubenotcher tab.  Cut your tube and tack it in place.  Then create the templates for the two 45&deg; tubes, using the Airframe Cluster tab.
+                            Divide and conquer, keep it simple.
+                        </li>
+
+                     </ul>
+                            <center>
+                                <img src="includes/images/airframe_5_way_joint_w_text.jpg" style="width: 700px; height: auto;"/>
+                            </center>
+                    <p class="small_font">Note: the three truss related images shown here are all from <a href="https://web.archive.org/web/20160306120337/http://vr3.ca/">VR3 Engineering Ltd.</a>, a company that does custom CNC tube notching and prep work.
+                    If you don't want to cut your own tubing using paper templates, you might consider giving them a call. </p>
+                </div>
+                <div class="box_container">
+                    <canvas class="canvas" id="canvas_fatc" width="100" height="60"></canvas>
+                </div>
+            </div>
+
+            <div id="tab12" class="tab_content">
+                <h2>We really want to solicit your feedback</h2>
+                <form id="future_form">
+                    <div class="containerLeft">What is your primary metalwork interest?
+                        <br/>
+                        <input type="radio" name="user_interest" value="bicycle">
+                        <label>Bicycle Fabrication</label>
+                        <br>
+                        <input type="radio" name="user_interest" value="automotive">
+                        <label>Automotive (On &amp; Off Road) Related</label>
+                        </label>
+                        <br>
+                        <input type="radio" name="user_interest" value="motorcycle">
+                        <label>Motorcycle Fabrication</label>
+                        <br>
+                    </div>
+                    <div class="containerLeft">
+                        <br/>
+                        <input type="radio" name="user_interest" value="general_fab">
+                        <label>General Fabrication</label>
+                        <br>
+                        <input type="radio" name="user_interest" value="Artwork">
+                        <label>Metal Art Work</label>
+                        </label>
+                        <br>
+                        <input type="radio" name="user_interest" value="Other">
+                        <label>Other Specialty Products</label>
+                        <br>
+                    </div>
+                    <div class="containerLeft">
+                        <label for="desired_feature">A feature I'd like to see added to the TubeNotcher Software package is:</label>
+                        <br/>
+                        <input type="text" name="desired_feature" id="desired_feature" value="" size="50">
+                    </div>
+
+                    <div class="containerLeft">
+                        <br/>
+                        <br/>
+                        <input type="button" value="Submit This Brief Survey Response" id="future_onClick">
+                        <br/>
+                    </div>
+                </form>
+                <div style="clear: both"></div>
+                <div class="textBox">
+                    <iframe src="includes/resources/future_enhancements.html" width="100%" height="100%"></iframe>
+                </div>
+            </div>
+        </div>
+        <!--  end of .tab_container -->
+        &copy; Copyright 2015 -- Dog Feather Design
+    </div>
+    <div id="numeric_input_info_box" class="info_box" title="Data Entry Format Problem"></div>
+    <!-- <div class="indevelopment"> Program in Development
+        <br> use at your own risk.</div> -->
+</body>
+
+</html>
