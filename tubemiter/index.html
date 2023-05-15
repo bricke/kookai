@@ -124,8 +124,6 @@
             <li><a href="#tab8">Collector</a></li>
             <li><a href="#tab9">Round/SQ</a></li>
             <li><a href="#tab10">Round/Flat</a></li>
-            <li><a href="#tab11">Airframe Cluster</a></li>
-            <li><a href="#tab12">Issues/Upgrades?</a></li>
         </ul>
         <div class="tab_container">
             <div id="tab1" class="tab_content">
@@ -752,129 +750,6 @@ Examples:  25.4  or 20-1/2 or 1&quot; or 1-1/4&quot; or 2.5&quot;">Tube O.D. (mm
                 </div>
                 <div class="box_container">
                     <canvas class="canvas" id="canvas_rtfm" width="100" height="60"></canvas>
-                </div>
-            </div>
-
-            <div id="tab11" class="tab_content">
-                <h2>Flat Airframe Truss Cluster</h2>
-                <form id="fatc_form">
-
-                    <div class="containerLeft">
-                        <label title="Data can be entered in
-the default millimeters or in inches.  Enter data in
-either decimal or fraction format.
-Examples:  25.4  or 20-1/2 or 1&quot; or 1-1/4&quot; or 2.5&quot;">Cut Tube O.D. (mm):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                        <input type="text" id="fatcCutTubeOD" value="3/4 inch" size="8">
-                        <br/>
-                        <label>Cut Tube Matl Thickness (mm):</label>
-                        <input type="text" id="fatcMatlThickness" value="0.032&quot;" size="8">
-                        <br/>
-                        <label>Angle Between Cut Tube and the Tube on its Left (deg):</label>
-                        <input type="text" id="fatcLeftAngle" value="30" size="8">
-                        <br>
-                    </div>
-                    <div class="containerLeft">
-                        <label>Left Tube O.D. (mm): &nbsp;</label>
-                        <input type="text" id="fatcLeftTubeOD" value="3/4 inch" size="8">
-                        <br/>
-                        <label>Angle Between Cut Tube and the Tube on its Right (deg):</label>
-                        <input type="text" id="fatcRightAngle" value="60" size="8">
-                        <br>
-                        <label>Right Tube O.D. (mm): &nbsp;</label>
-                        <input type="text" id="fatcRightTubeOD" value="3/4 inch" size="8">
-                    </div>
-                    <div style="clear: both"></div>
-                    <div class="containerLeft">
-                        <input type="button" value="Calculate" id="fatc_onClick">
-                        <input type="button" value="Print" id="fatc_onPrintClick">
-                        <input type="button" value=" Help / Info" id="fatc_onHelpClick">
-                    </div>
-                </form>
-                <div id="fatc_info_box" class="info_box" title="Round Tube to Flat Material Help / Info.">
-                    <p autofocus>This is a joint used by folks in homebuilt airplanes, but its also applicable to vehicle truss structures and a whole lot more...</p>
-                    <center>
-                        <img src="includes/images/vr3_prof_tubes_2std.jpg" style="width: 400px; height: auto;"/>
-                    </center>
-
-                    <center>
-                        <img src="includes/images/vr3_dsc_0122std.jpg" style="width: 400px; height: auto; "/>
-                    </center>
-
-                    <center>
-                        <img src="includes/images/vr3_prof_tubes_3std.jpg" style="width: 400px; height: auto;"/>
-                    </center>
-
-                    <h2>Assumptions:</h2>
-                    <ul>
-                        <li>
-                            <p> The centerlines of the cut tube and its nearest neighbors are coplanar.  That is, Cut / Left / Right tubing centerlines all lie on a single flat plane.</p>
-                        </li>
-                        <li><p> The centerlines of all three tubes meet at a single intersection point.</p>
-                        </li>
-                        <li> <p> Note, Left/Right terminology is arbitrary.  Just be consistent. </p>
-                        </li>
-                        <li> This tools is set up for an incremental build process.  Lets say you are going to build a joint with long straight tube, and three feeder tubes, each 45&deg; from each other.
-                            Build it incrementally. First add the 90&deg; tube, using the Simple Tubenotcher tab.  Cut your tube and tack it in place.  Then create the templates for the two 45&deg; tubes, using the Airframe Cluster tab.
-                            Divide and conquer, keep it simple.
-                        </li>
-
-                     </ul>
-                            <center>
-                                <img src="includes/images/airframe_5_way_joint_w_text.jpg" style="width: 700px; height: auto;"/>
-                            </center>
-                    <p class="small_font">Note: the three truss related images shown here are all from <a href="https://web.archive.org/web/20160306120337/http://vr3.ca/">VR3 Engineering Ltd.</a>, a company that does custom CNC tube notching and prep work.
-                    If you don't want to cut your own tubing using paper templates, you might consider giving them a call. </p>
-                </div>
-                <div class="box_container">
-                    <canvas class="canvas" id="canvas_fatc" width="100" height="60"></canvas>
-                </div>
-            </div>
-
-            <div id="tab12" class="tab_content">
-                <h2>We really want to solicit your feedback</h2>
-                <form id="future_form">
-                    <div class="containerLeft">What is your primary metalwork interest?
-                        <br/>
-                        <input type="radio" name="user_interest" value="bicycle">
-                        <label>Bicycle Fabrication</label>
-                        <br>
-                        <input type="radio" name="user_interest" value="automotive">
-                        <label>Automotive (On &amp; Off Road) Related</label>
-                        </label>
-                        <br>
-                        <input type="radio" name="user_interest" value="motorcycle">
-                        <label>Motorcycle Fabrication</label>
-                        <br>
-                    </div>
-                    <div class="containerLeft">
-                        <br/>
-                        <input type="radio" name="user_interest" value="general_fab">
-                        <label>General Fabrication</label>
-                        <br>
-                        <input type="radio" name="user_interest" value="Artwork">
-                        <label>Metal Art Work</label>
-                        </label>
-                        <br>
-                        <input type="radio" name="user_interest" value="Other">
-                        <label>Other Specialty Products</label>
-                        <br>
-                    </div>
-                    <div class="containerLeft">
-                        <label for="desired_feature">A feature I'd like to see added to the TubeNotcher Software package is:</label>
-                        <br/>
-                        <input type="text" name="desired_feature" id="desired_feature" value="" size="50">
-                    </div>
-
-                    <div class="containerLeft">
-                        <br/>
-                        <br/>
-                        <input type="button" value="Submit This Brief Survey Response" id="future_onClick">
-                        <br/>
-                    </div>
-                </form>
-                <div style="clear: both"></div>
-                <div class="textBox">
-                    <iframe src="includes/resources/future_enhancements.html" width="100%" height="100%"></iframe>
                 </div>
             </div>
         </div>
