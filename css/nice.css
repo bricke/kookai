@@ -41324,51 +41324,46 @@ a.u-link.u-text-hover-grey-90:hover {
 
 
 /*end-variables sitestylecss*/
- .u-header {
-  background-image: none;
-}
-
 .u-header .u-sheet-1 {
-  min-height: 285px;
+  min-height: 31px;
+}
+.u-header .u-sheet-2 {
+  min-height: 382px;
 }
 
 .u-header .u-image-1 {
-  width: 500px;
-  height: 285px;
-  margin: 0 auto;
+  width: 432px;
+  height: 272px;
+  margin: 85px auto 25px;
 }
 
-.u-header .u-logo-image-1 {
-  width: 100%;
-  height: 100%;
+@media (max-width: 1199px) {
+  .u-header .u-image-1 {
+    width: 432px;
+    height: 273px;
+  }
 }
+
 
 
 
 @media (max-width: 575px) {
   .u-header .u-sheet-1 {
-    min-height: 283px;
+    min-height: 69px;
+  }
+}
+@media (max-width: 575px) {
+  .u-header .u-sheet-2 {
+    min-height: 324px;
   }
 
   .u-header .u-image-1 {
     width: 340px;
-    height: 194px;
-    margin-left: 0;
-    margin-right: 0;
-    margin-bottom: 60px;
+    height: 215px;
   }
 }
- .u-footer {
-  background-image: none;
-}
-
 .u-footer .u-sheet-1 {
-  min-height: 120px;
-}
-
-.u-footer .u-text-1 {
-  width: 417px;
-  margin: 49px auto;
+  min-height: 166px;
 }
 @media (max-width: 1199px) {
   .u-footer .u-sheet-1 {
@@ -41388,10 +41383,6 @@ a.u-link.u-text-hover-grey-90:hover {
 @media (max-width: 575px) {
   .u-footer .u-sheet-1 {
     min-height: 36px;
-  }
-
-  .u-footer .u-text-1 {
-    width: 340px;
   }
 }
 
